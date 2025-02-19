@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public Text levelText; // UI Text to display the selected level
+    public TextMeshPro levelText; // UI Text to display the selected level
     private string[] levels = { "Level1", "Level2", "Level3", "Level4" }; // Each level in order
     private int currentLevelIndex = 0;
 
