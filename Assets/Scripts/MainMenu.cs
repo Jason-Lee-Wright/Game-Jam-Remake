@@ -33,8 +33,8 @@ public class MainMenu : MonoBehaviour
     void ChangeLevel(int change)
     {
         currentLevelIndex += change;
-        if (currentLevelIndex >= levels.Length) currentLevelIndex = 0;
-        if (currentLevelIndex < 0) currentLevelIndex = levels.Length - 1;
+        if (currentLevelIndex >= levels.Length) currentLevelIndex = levels.Length - 1;
+        if (currentLevelIndex < 0) currentLevelIndex = 0;
         UpdateLevelText();
     }
 
