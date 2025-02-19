@@ -5,7 +5,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public TextMeshPro levelText; // UI Text to display the selected level
+    public TextMeshProUGUI levelText; // UI Text to display the selected level
     private string[] levels = { "Level1", "Level2", "Level3", "Level4" }; // Each level in order
     private int currentLevelIndex = 0;
 
