@@ -6,6 +6,8 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
     public TextMeshProUGUI levelText; // UI Text to display the selected level
+    public AudioClip downChime, upChime, spaceChime, moveBottle, safeBottle, deathBottle;
+
     private string[] levels = { "Level1", "Level2", "Level3", "Level4" }; // Each level in order
     private int currentLevelIndex = 0;
 
@@ -18,14 +20,17 @@ public class MainMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            //Make play chime audio
             ChangeLevel(1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            //Make play chime audio
             ChangeLevel(-1);
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            //Make play chime audio
             StartGame();
         }
     }
