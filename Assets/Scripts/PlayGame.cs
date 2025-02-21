@@ -12,30 +12,30 @@ public class PlayGame : MonoBehaviour
     public TextMeshProUGUI playerTime;
     public float gameTime = 60f;
     private float currentTime;
+    private float PlayerTimeRemaining;
 
-    private string[] statements = { "Tastes like chicken!", "Smells funny...", "Guaranteed to kill!", "Sweet and harmless", "Death", "Looks healthy!", "Might be expired...", "Glows in the dark" };
-    private string[] deathStatements = { "Guaranteed to kill!", "Death" };
+    private string[] statements = { "Tastes like chicken", "Smells funny", "Guaranteed to kill", "Sweet and harmless", "Death", "Looks healthy", "Might be expired", "Glows in the dark" };
+    private string[] deathStatements = { "Guaranteed to kill", "Death" };
     private List<string> eatenItems = new List<string>();
 
     private int killBottleCount = 0;
     private List<string> currentStatements = new List<string>();
 
-
-    private float playerTimeCount = 20f;
-
     void Start()
     {
         currentTime = gameTime;
+        PlayerTimeRemaining = currentTime / 10;
         SelectNewBottle();
     }
 
     void Update()
     {
         currentTime -= Time.deltaTime;
+        PlayerTimeRemaining -= Time.deltaTime;
         timerText.text = "Time: " + Mathf.Ceil(currentTime).ToString();
-        playerTime.text = "Time: " + Mathf.Ceil(currentTime).ToString();
+        playerTime.text = "Time: " + Mathf.Ceil(PlayerTimeRemaining).ToString();
 
-        if (currentTime <= 0)
+        if (currentTime <= PlayerTimeRemaining)
         {
             WinGame();
         }
@@ -90,6 +90,7 @@ public class PlayGame : MonoBehaviour
         }
         else
         {
+            PlayerTimeRemaining += PlayerTimeRemaining + 12f;
             SelectNewBottle();
         }
 
