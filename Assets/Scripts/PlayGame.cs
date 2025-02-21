@@ -24,7 +24,7 @@ public class PlayGame : MonoBehaviour
     void Start()
     {
         currentTime = gameTime;
-        PlayerTimeRemaining = currentTime / 10;
+        PlayerTimeRemaining = currentTime / 6;
         SelectNewBottle();
     }
 
@@ -90,7 +90,7 @@ public class PlayGame : MonoBehaviour
         }
         else
         {
-            PlayerTimeRemaining += PlayerTimeRemaining + 12f;
+            PlayerTimeRemaining += 12f;
             SelectNewBottle();
         }
 
