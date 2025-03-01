@@ -8,7 +8,11 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI levelText; // UI Text to display the selected level
     public AudioClip downChime, upChime, spaceChime, moveBottle, safeBottle, deathBottle;
 
-    private string[] levels = { "Level1", "Level2", "Level3", "Level4" }; // Each level in order
+    private string[] levels = { "Level 1", "Level2", "Level3", "Level4" }; // Each level in order
+    private string[] levelInfo = { "The sock Puppet is dying. You should stop that. Lucky for you there are random drugs everywhere... thats the perfect thing to feed it!",
+                                   "Level2",
+                                   "Level3",
+                                   "Level4"};
     private int currentLevelIndex = 0;
 
     void Start()
@@ -45,7 +49,7 @@ public class MainMenu : MonoBehaviour
 
     void UpdateLevelText()
     {
-        levelText.text = "Selected Level: " + levels[currentLevelIndex];
+        levelText.text = "Selected Level: " + levels[currentLevelIndex] + "\n" + levelInfo[currentLevelIndex];
 
         // Later use currentLevelIndex to change text to be more specific
     }
