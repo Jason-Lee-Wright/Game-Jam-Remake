@@ -7,9 +7,8 @@ using System.Linq;
 
 public class PlayGame : MonoBehaviour
 {
-    public TextMeshProUGUI bottleText;
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI playerTime;
+    public TextMeshProUGUI bottleText, timerText, playerTime;
+    public GameObject EndGameScreen;
     public float gameTime = 60f;
     private float currentTime;
     private float PlayerTimeRemaining;

@@ -5,19 +5,23 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject MenuScreen, GameScreen;
+
     public TextMeshProUGUI levelText; // UI Text to display the selected level
     public AudioClip downChime, upChime, spaceChime, moveBottle, safeBottle, deathBottle;
 
     private string[] levels = { "Level 1", "Level2", "Level3", "Level4" }; // Each level in order
-    private string[] levelInfo = { "The sock Puppet is dying. You should stop that. Lucky for you there are random drugs everywhere... thats the perfect thing to feed it!",
-                                   "Level2",
-                                   "Level3",
-                                   "Level4"};
+    private string[] levelInfo = { "The sock Puppet is dying. You should stop that. Lucky for you there are random drugs everywhere... \nthats the perfect thing to feed it!",
+                                   "These pills are just allergies??? \nThat should work!!",
+                                   "Drugs AND allergies....... \nWHAT A GOOD IDEA!!!!!",
+                                   "These are just regular medicine.... \nfine I guess this can work.."};
     private int currentLevelIndex = 0;
 
     void Start()
     {
         UpdateLevelText();
+        GameScreen.SetActive(false);
+        MenuScreen.SetActive(true);
     }
 
     void Update()
@@ -56,6 +60,12 @@ public class MainMenu : MonoBehaviour
 
     void StartGame()
     {
-        SceneManager.LoadScene(levels[currentLevelIndex]);
+        MenuScreen.SetActive(false);
+        GameScreen.SetActive(true);
     }
+}
+
+public static class LevelSelection
+{
+    public static Action<string> LevelChoosen;
 }
