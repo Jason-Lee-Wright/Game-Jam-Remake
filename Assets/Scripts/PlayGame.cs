@@ -8,7 +8,7 @@ using System.Linq;
 public class PlayGame : MonoBehaviour
 {
     public TextMeshProUGUI bottleText, timerText, playerTime;
-    public GameObject LoseScreen, WinScreen;
+    public GameObject LoseScreen, WinScreen, GameScreen;
     public float gameTime = 60f;
     private float currentTime;
     private float PlayerTimeRemaining;
@@ -27,6 +27,8 @@ public class PlayGame : MonoBehaviour
         currentTime = gameTime;
         PlayerTimeRemaining = currentTime / 6;
         SelectNewBottle();
+        WinScreen.SetActive(false);
+        LoseScreen.SetActive(false);
     }
 
     void Update()
@@ -100,12 +102,15 @@ public class PlayGame : MonoBehaviour
     void LoseGame()
     {
         Debug.Log("You lost! Items eaten: " + string.Join(", ", eatenItems));
-        SceneManager.LoadScene("GameOver");
+        LoseScreen.SetActive(true);
+        GameScreen.SetActive(false);
     }
 
     void WinGame()
     {
         Debug.Log("You won! Items eaten: " + string.Join(", ", eatenItems));
-        SceneManager.LoadScene("WinScene");
+        WinScreen.SetActive(true);
+        GameScreen.SetActive(false);
+
     }
 }
