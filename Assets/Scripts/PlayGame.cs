@@ -8,7 +8,7 @@ using System.Linq;
 public class PlayGame : MonoBehaviour
 {
     public TextMeshProUGUI bottleText, timerText, playerTime;
-    public GameObject EndGameScreen;
+    public GameObject LoseScreen, WinScreen;
     public float gameTime = 60f;
     private float currentTime;
     private float PlayerTimeRemaining;
@@ -19,6 +19,8 @@ public class PlayGame : MonoBehaviour
 
     private int killBottleCount = 0;
     private List<string> currentStatements = new List<string>();
+
+    private string LevelSelected;
 
     void Start()
     {

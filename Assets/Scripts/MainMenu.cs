@@ -64,8 +64,3 @@ public class MainMenu : MonoBehaviour
         GameScreen.SetActive(true);
     }
 }
-
-public static class LevelSelection
-{
-    public static Action<string> LevelChoosen;
-}
