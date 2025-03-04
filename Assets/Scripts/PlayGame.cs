@@ -95,6 +95,13 @@ public class GameController : MonoBehaviour
 
         SelectNewItem();
 
+        LoseItems.text = string.Empty;
+        WinItems.text = string.Empty;
+        itemText.text = string.Empty;
+        allergicFoods.Clear();
+        eatenItems.Clear();
+        currentStatements.Clear();
+
         WinScreen.SetActive(false);
         LoseScreen.SetActive(false);
     }
@@ -131,10 +138,10 @@ public class GameController : MonoBehaviour
     {
         itemText.text = string.Empty;
 
-        if (gameMode != GameMode.Bottle || gameMode != GameMode.LessTime)
+        if (gameMode != GameMode.Bottle && gameMode != GameMode.LessTime)
         {
             currentItem = foods[Random.Range(0, foods.Length)];
-            itemText.text = "Food: " + currentItem;
+            itemText.text = "Food: " + currentItem + "\nAllergies: " + string.Join("  ", allergicFoods);
         }
 
         if (gameMode != GameMode.Food)
@@ -181,7 +188,7 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                if (Random.value < 0.25f) // 25% chance to develop an allergy
+                if (Random.value < 0.5f)
                 {
                     allergicFoods.Add(currentItem);
                 }
@@ -189,7 +196,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (gameMode == GameMode.Bottle || gameMode == GameMode.Both)
+        if (gameMode == GameMode.Bottle || gameMode == GameMode.Both || gameMode == GameMode.LessTime)
         {
             eatenItems.AddRange(currentStatements);
             if (currentStatements.Any(statement => deathStatements.Contains(statement)))
