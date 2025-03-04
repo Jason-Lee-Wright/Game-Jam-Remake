@@ -2683,10 +2683,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18bdb5c51a1cce24884afe821b70056c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMode: 0
+  eatSound: {fileID: 0}
+  safeSound: {fileID: 0}
+  allergicReactionSound: {fileID: 0}
   moveBottle: {fileID: 0}
   safeBottle: {fileID: 0}
   deathBottle: {fileID: 0}
-  bottleText: {fileID: 72747088}
+  itemText: {fileID: 72747088}
   timerText: {fileID: 595791442}
   playerTime: {fileID: 591418542}
   WinItems: {fileID: 513599635}

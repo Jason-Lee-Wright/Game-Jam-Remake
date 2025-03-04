@@ -1,34 +1,77 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using TMPro;
+using System.Collections.Generic;
 using System.Linq;
 
-public class PlayGame : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    public AudioClip moveBottle, safeBottle, deathBottle;
+    public enum GameMode { Bottle, Food, Both, LessTime }
+    public GameMode gameMode;
 
-    public TextMeshProUGUI bottleText, timerText, playerTime, WinItems, LoseItems;
+    public AudioSource moveBottle, safeBottle, deathBottle;
+
+    public TextMeshProUGUI itemText, timerText, playerTime, WinItems, LoseItems;
     public GameObject LoseScreen, WinScreen, GameScreen;
     public float gameTime = 60f;
     private float currentTime;
     private float PlayerTimeRemaining;
 
+    private string[] foods = { "Peanuts", "Strawberries", "Shellfish", "Milk", "Eggs", "Soy", "Wheat", "Fish", "Tree Nuts" };
     private string[] statements = { "Tastes like chicken", "Smells funny", "Guaranteed to kill", "Sweet and harmless", "Death", "Looks healthy", "Might be expired", "Glows in the dark" };
     private string[] deathStatements = { "Guaranteed to kill", "Death" };
-    private List<string> eatenItems = new List<string>();
 
+    private List<string> allergicFoods = new List<string>();
+    private List<string> eatenItems = new List<string>();
     private int killBottleCount = 0;
     private List<string> currentStatements = new List<string>();
+    private string currentItem;
 
-    private string LevelSelected;
+    public MainMenu mainMenu;
 
-    void Start()
+    void OnEnable()
     {
+        // Subscribe to the delegate
+        GamemodeInt.GameSetter += SetGameMode;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe to avoid memory leaks
+        GamemodeInt.GameSetter -= SetGameMode;
+    }
+
+    void SetGameMode(int levelIndex)
+    {
+        switch (levelIndex)
+        {
+            case 0: gameMode = GameMode.Bottle; break;
+            case 1: gameMode = GameMode.Food; break;
+            case 2: gameMode = GameMode.Both; break;
+            case 3: gameMode = GameMode.LessTime; break;
+        }
+
+        Debug.Log("Game Mode Set To: " + gameMode);
+    }
+
+    void Awake()
+    {
+
         currentTime = gameTime;
-        PlayerTimeRemaining = currentTime / 6;
-        SelectNewBottle();
+
+        gameTime = 60f;
+
+        if (gameMode == GameMode.LessTime)
+        {
+            PlayerTimeRemaining = currentTime / 8;
+        }
+        else
+        {
+            PlayerTimeRemaining = currentTime / 6;
+        }
+
+        SelectNewItem();
+
         WinScreen.SetActive(false);
         LoseScreen.SetActive(false);
     }
@@ -45,74 +88,112 @@ public class PlayGame : MonoBehaviour
             WinGame();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) // Eat
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) // Eat/Drink
         {
-            EatBottle();
+            ConsumeItem();
+            moveBottle.Play();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow)) // Don't eat
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) // Skip
         {
-            SelectNewBottle();
+            SelectNewItem();
+            moveBottle.Play();
         }
     }
 
-    void SelectNewBottle()
+    void SelectNewItem()
     {
-        currentStatements.Clear();
+        itemText.text = string.Empty;
 
-        if (killBottleCount >= 3)
+        if (gameMode == GameMode.Food || gameMode == GameMode.Both)
         {
-            currentStatements.Add("Sweet and harmless"); // Guaranteed live bottle
-            killBottleCount = 0;
+            currentItem = foods[Random.Range(0, foods.Length)];
+            itemText.text = "Food: " + currentItem;
         }
-        else
+
+        if (gameMode == GameMode.Bottle || gameMode == GameMode.Both)
         {
-            int numStatements = Random.Range(2, 4); // Choose 2 or 3 statements per bottle
-            for (int i = 0; i < numStatements; i++)
+            currentStatements.Clear();
+
+            if (killBottleCount >= 3)
             {
-                string newStatement = statements[Random.Range(0, statements.Length)];
-                if (!currentStatements.Contains(newStatement)) // Avoid duplicates
+                currentStatements.Add("Sweet and harmless"); // Guaranteed safe bottle
+                killBottleCount = 0;
+            }
+            else
+            {
+                int numStatements = Random.Range(2, 4);
+                for (int i = 0; i < numStatements; i++)
                 {
-                    currentStatements.Add(newStatement);
+                    string newStatement = statements[Random.Range(0, statements.Length)];
+                    if (!currentStatements.Contains(newStatement))
+                    {
+                        currentStatements.Add(newStatement);
+                    }
+                }
+
+                if (currentStatements.Any(statement => deathStatements.Contains(statement)))
+                {
+                    killBottleCount++;
                 }
             }
 
-            if (currentStatements.Any(Statement => deathStatements.Contains(Statement)))
+            itemText.text += "\nBottle says:\n" + string.Join("\n", currentStatements);
+        }
+    }
+
+    void ConsumeItem()
+    {
+        if (gameMode == GameMode.Food || gameMode == GameMode.Both)
+        {
+            eatenItems.Add(currentItem);
+            if (allergicFoods.Contains(currentItem))
             {
-                killBottleCount++;
+                deathBottle.Play();
+                LoseGame();
+                return;
+            }
+            else
+            {
+                if (Random.value < 0.25f) // 25% chance to develop an allergy
+                {
+                    allergicFoods.Add(currentItem);
+                }
+                PlayerTimeRemaining += 12f;
             }
         }
 
-        bottleText.text = "Bottle says:\n" + string.Join("\n", currentStatements);
-
-    }
-
-    void EatBottle()
-    {
-        eatenItems.AddRange(currentStatements);
-        if (currentStatements.Any(Statement => deathStatements.Contains(Statement)))
+        if (gameMode == GameMode.Bottle || gameMode == GameMode.Both)
         {
-            LoseGame();
-        }
-        else
-        {
-            PlayerTimeRemaining += 12f;
-            SelectNewBottle();
+            eatenItems.AddRange(currentStatements);
+            if (currentStatements.Any(statement => deathStatements.Contains(statement)))
+            {
+                deathBottle.Play();
+                LoseGame();
+                return;
+            }
+            else
+            {
+                PlayerTimeRemaining += 12f;
+            }
         }
 
+        safeBottle.Play();
+        SelectNewItem();
     }
 
     void LoseGame()
     {
-        LoseItems.text = ("You lost! Items eaten: " + string.Join(", ", eatenItems));
+        LoseItems.text = "You lost! Items consumed: " + string.Join(", ", eatenItems);
         LoseScreen.SetActive(true);
         GameScreen.SetActive(false);
     }
 
     void WinGame()
     {
-        WinItems.text = ("You lost! Items eaten: " + string.Join(", ", eatenItems));
+        WinItems.text = "You won! Items consumed: " + string.Join(", ", eatenItems);
         WinScreen.SetActive(true);
+        PlayerTimeRemaining = 10f;
+        currentTime = 60f;
         GameScreen.SetActive(false);
-
     }
 }

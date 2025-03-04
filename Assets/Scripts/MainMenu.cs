@@ -5,7 +5,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject MenuScreen, GameScreen;
+    public GameObject MenuScreen, GameScreen, game;
 
     public TextMeshProUGUI levelText; // UI Text to display the selected level
     public AudioSource downChime, upChime;
@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
                                    "These pills are just allergies??? \nThat should work!!",
                                    "Drugs AND allergies....... \nWHAT A GOOD IDEA!!!!!",
                                    "These are just regular medicine.... \nfine I guess this can work.."};
-    private int currentLevelIndex = 0;
+    public int currentLevelIndex = 0;
 
     void Start()
     {
@@ -69,7 +69,16 @@ public class MainMenu : MonoBehaviour
 
     void StartGame()
     {
+        game.SetActive(true);
+
+        GamemodeInt.GameSetter?.Invoke(currentLevelIndex);
+
         MenuScreen.SetActive(false);
         GameScreen.SetActive(true);
     }
+}
+
+public static class GamemodeInt
+{
+    public static Action<int> GameSetter;
 }
