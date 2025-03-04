@@ -87,6 +87,10 @@ public class GameController : MonoBehaviour
         {
             WinGame();
         }
+        else if (0 >= PlayerTimeRemaining)
+        {
+            LoseGame();
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) // Eat/Drink
         {
@@ -104,13 +108,13 @@ public class GameController : MonoBehaviour
     {
         itemText.text = string.Empty;
 
-        if (gameMode == GameMode.Food || gameMode == GameMode.Both)
+        if (gameMode != GameMode.Bottle || gameMode != GameMode.LessTime)
         {
             currentItem = foods[Random.Range(0, foods.Length)];
             itemText.text = "Food: " + currentItem;
         }
 
-        if (gameMode == GameMode.Bottle || gameMode == GameMode.Both)
+        if (gameMode != GameMode.Food)
         {
             currentStatements.Clear();
 
