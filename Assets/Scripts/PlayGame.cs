@@ -51,12 +51,35 @@ public class GameController : MonoBehaviour
             case 3: gameMode = GameMode.LessTime; break;
         }
 
+        resetGame();
+
         Debug.Log("Game Mode Set To: " + gameMode);
     }
 
     void Awake()
     {
 
+        currentTime = gameTime;
+
+        gameTime = 60f;
+
+        if (gameMode == GameMode.LessTime)
+        {
+            PlayerTimeRemaining = currentTime / 8;
+        }
+        else
+        {
+            PlayerTimeRemaining = currentTime / 6;
+        }
+
+        SelectNewItem();
+
+        WinScreen.SetActive(false);
+        LoseScreen.SetActive(false);
+    }
+
+    void resetGame()
+    {
         currentTime = gameTime;
 
         gameTime = 60f;

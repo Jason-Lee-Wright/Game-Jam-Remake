@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     {
         UpdateLevelText();
         GameScreen.SetActive(false);
+        game.SetActive(false);
         MenuScreen.SetActive(true);
     }
 
