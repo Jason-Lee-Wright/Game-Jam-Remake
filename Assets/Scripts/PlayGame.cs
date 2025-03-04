@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
     private List<string> currentStatements = new List<string>();
     private string currentItem;
 
+    private bool GameOverNow;
+
     public MainMenu mainMenu;
 
     void OnEnable()
@@ -93,25 +95,32 @@ public class GameController : MonoBehaviour
             PlayerTimeRemaining = currentTime / 6;
         }
 
+        itemText.text = string.Empty;
+
         SelectNewItem();
 
         LoseItems.text = string.Empty;
         WinItems.text = string.Empty;
-        itemText.text = string.Empty;
         allergicFoods.Clear();
         eatenItems.Clear();
         currentStatements.Clear();
 
         WinScreen.SetActive(false);
         LoseScreen.SetActive(false);
+
+        GameOverNow = false;
     }
 
     void Update()
     {
-        currentTime -= Time.deltaTime;
-        PlayerTimeRemaining -= Time.deltaTime;
-        timerText.text = "Time: " + Mathf.Ceil(currentTime).ToString();
-        playerTime.text = "Time: " + Mathf.Ceil(PlayerTimeRemaining).ToString();
+        if (GameOverNow == false)
+        {
+            currentTime -= Time.deltaTime;
+            PlayerTimeRemaining -= Time.deltaTime;
+            timerText.text = "Time: " + Mathf.Ceil(currentTime).ToString();
+            playerTime.text = "Time: " + Mathf.Ceil(PlayerTimeRemaining).ToString();
+        }
+
 
         if (currentTime <= PlayerTimeRemaining)
         {
@@ -217,6 +226,7 @@ public class GameController : MonoBehaviour
 
     void LoseGame()
     {
+        GameOverNow = true;
         LoseItems.text = "You lost! Items consumed: " + string.Join(", ", eatenItems);
         LoseScreen.SetActive(true);
         GameScreen.SetActive(false);
@@ -224,6 +234,7 @@ public class GameController : MonoBehaviour
 
     void WinGame()
     {
+        GameOverNow = true;
         WinItems.text = "You won! Items consumed: " + string.Join(", ", eatenItems);
         WinScreen.SetActive(true);
         PlayerTimeRemaining = 10f;
