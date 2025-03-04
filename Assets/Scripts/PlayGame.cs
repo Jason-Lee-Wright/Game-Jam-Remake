@@ -9,7 +9,7 @@ public class PlayGame : MonoBehaviour
 {
     public AudioClip moveBottle, safeBottle, deathBottle;
 
-    public TextMeshProUGUI bottleText, timerText, playerTime;
+    public TextMeshProUGUI bottleText, timerText, playerTime, WinItems, LoseItems;
     public GameObject LoseScreen, WinScreen, GameScreen;
     public float gameTime = 60f;
     private float currentTime;
@@ -103,14 +103,14 @@ public class PlayGame : MonoBehaviour
 
     void LoseGame()
     {
-        Debug.Log("You lost! Items eaten: " + string.Join(", ", eatenItems));
+        LoseItems.text = ("You lost! Items eaten: " + string.Join(", ", eatenItems));
         LoseScreen.SetActive(true);
         GameScreen.SetActive(false);
     }
 
     void WinGame()
     {
-        Debug.Log("You won! Items eaten: " + string.Join(", ", eatenItems));
+        WinItems.text = ("You lost! Items eaten: " + string.Join(", ", eatenItems));
         WinScreen.SetActive(true);
         GameScreen.SetActive(false);
 
