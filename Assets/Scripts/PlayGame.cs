@@ -7,6 +7,8 @@ using System.Linq;
 
 public class PlayGame : MonoBehaviour
 {
+    public AudioClip moveBottle, safeBottle, deathBottle;
+
     public TextMeshProUGUI bottleText, timerText, playerTime;
     public GameObject LoseScreen, WinScreen, GameScreen;
     public float gameTime = 60f;

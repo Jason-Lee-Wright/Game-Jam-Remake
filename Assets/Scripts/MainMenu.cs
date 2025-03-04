@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     public GameObject MenuScreen, GameScreen;
 
     public TextMeshProUGUI levelText; // UI Text to display the selected level
-    public AudioClip downChime, upChime, spaceChime, moveBottle, safeBottle, deathBottle;
+    public AudioSource downChime, upChime;
 
     private string[] levels = { "Level 1", "Level2", "Level3", "Level4" }; // Each level in order
     private string[] levelInfo = { "The sock Puppet is dying. You should stop that. Lucky for you there are random drugs everywhere... \nthats the perfect thing to feed it!",
@@ -26,6 +26,15 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Space))
+        {
+            downChime.Play();
+        }
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.Space))
+        {
+            upChime.Play();
+        }
+
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             //Make play chime audio
