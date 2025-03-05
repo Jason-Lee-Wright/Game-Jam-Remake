@@ -216,7 +216,14 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                PlayerTimeRemaining += 12f;
+                if (gameMode == GameMode.LessTime)
+                {
+                    PlayerTimeRemaining += 6f;
+                }
+                else
+                {
+                    PlayerTimeRemaining += 12f;
+                }
             }
         }
 
