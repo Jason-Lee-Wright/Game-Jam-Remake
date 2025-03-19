@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToMianMenu : MonoBehaviour
 {
-    public GameObject MainMenu, win, lose, game, gameScreen;
+    public GameObject MainMenu, game, GameOver, gameScreen;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -16,8 +16,7 @@ public class ToMianMenu : MonoBehaviour
 
     void DeactivateObjects()
     {
-        win.SetActive(false);
-        lose.SetActive(false);
+        GameOver.SetActive(false);
         game.SetActive(false);
         gameScreen.SetActive(false);
     }
